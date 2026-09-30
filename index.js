@@ -12,7 +12,7 @@ app.command("/slacker-int", async ({ command, ack, respond })=> {
 });
 app.command("/slacker-joke", async ({ ack, respond }) => {
   await ack();
-  if (Math.random() > 0.74) {
+  if (Math.random() > 0.50) {
     return;
   }
   try {
@@ -23,6 +23,16 @@ app.command("/slacker-joke", async ({ ack, respond }) => {
   } catch (err) {
     await respond({ text: "Failed to fetch a joke." });
   }
+});
+app.command("/slacker-help", async ({ ack, respond }) => {
+  await ack();
+  if (Math.random() > 0.50) {
+    return;
+  }
+  await respond({ text: `Fine. I'll tell you.
+    /slacker-help shows this help message maybe. if i feel like it..
+    /slacker-int introduces me.
+    /slacker-joke might give you a joke. might not.`});
 });
 (async () => {
     await app.start();

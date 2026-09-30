@@ -1,11 +1,13 @@
 require("dotenv").config({ path: "./slacker.env" });
 const axios = require("axios");
 const { App } = require("@slack/bolt");
+const { GoogleGenAI } = require("@google/genai");
 const app = new App({
     token: process.env.SLACK_BOT_TOKEN,
     appToken: process.env.SLACK_APP_TOKEN,
     socketMode: true
 });
+const ai = new GoogleGenAI();
 app.command("/slacker-int", async ({ command, ack, respond })=> {
     await ack();
     await respond({ 
@@ -67,6 +69,39 @@ app.command("/slacker-fb", async ({ ack, respond, client, command }) => {
     console.error("DETAILED SLACK ERROR:", err.data || err);
     await respond({ 
       text: `Failed to send feedback. Error: ${err.data?.error || err.message}`, 
+      response_type: "ephemeral" 
+    });
+  }
+});
+app.command("/slacker-ai", async ({ command, ack, respond }) => {
+  await ack();
+  const userPrompt = command.text.trim();
+  
+  if (!userPrompt) {
+    await respond({ 
+      text: "You actually have to type a prompt after the command, genius. Try `/slacker-ai [your message]`.", 
+      response_type: "ephemeral" 
+    });
+    return;
+  }
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: userPrompt,
+      config: {
+        systemInstruction: "You are Slacker, a deeply cynical, lazy, and sarcastic Slack bot. You hate doing work, you think everyone bothering you is annoying, and you want to be left alone. Keep your responses short, snappy, and full of attitude.",
+      },
+    });
+
+    await respond({ 
+      text: response.text, 
+      response_type: "in_channel" 
+    });
+  } catch (err) {
+    console.error("DETAILED GEMINI ERROR:", err);
+    await respond({ 
+      text: "I'm too lazy to talk to the AI right now. Try again later.", 
       response_type: "ephemeral" 
     });
   }

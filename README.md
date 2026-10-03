@@ -22,4 +22,4 @@ So i decided to make a slack bot one day, and i thought a cool gimmic might be t
 ## I DID NOT USE ANY AI IN THE MAKING OF THIS PROJECT. I WROTE ALL OF THE CODE AND READMEs AND EVERYTHING ELSE MYSELF. THE ONLY AI USED WAS THE GEMINI IMPLEMENTATION.
 
 Made by Yuri Yermol, 03/10/2026 European format.
-This project is licensed under the GNU General Public License 3.0. For further details, read [LICENSE.md](https://github.com/purpletue/slacker/main/LICENSE.md)
+This project is licensed under the GNU General Public License 3.0. For further details, read [LICENSE](LICENSE)
